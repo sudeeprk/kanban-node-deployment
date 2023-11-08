@@ -30,6 +30,8 @@ This is the backend component of Kanban Application, which is responsible for ma
 
    ```bash
    npm install
-,
+   
+3. Run the project:
+
    ```bash
    npm start
