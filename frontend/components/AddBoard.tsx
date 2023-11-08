@@ -19,7 +19,7 @@ const FormComponent: React.FC = () => {
 
     try {
       // Send the data to the Express API
-      const response = await axios.post('http://localhost:5000/api/addtask', formData);
+      const response = await axios.post('http://localhost:5000/api/addboard', formData);
       setSavedData(response.data); // Save the response data
       window.location.reload()
     } catch (error) {

@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const { createServer } = require("node:http");
+const boardModel = require("./model/boards");
 const taskModel = require("./model/tasks");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -19,23 +20,22 @@ mongoose
 
 app.use(cors());
 
-// Define a variable to keep track of the auto-incremented ID
 let autoIncrementId = 1;
 
-app.get("/api/tasks", (req, res) => {
-  taskModel
+//To retrive all saved Boards from MongoDB
+
+app.get("/api/boards", (req, res) => {
+  boardModel
     .find()
-    .then((tasks) => res.json(tasks))
+    .then((boards) => res.json(boards))
     .catch((err) => res.json(err));
 });
 
-app.post("/api/addtask", (req, res) => {
+//To add New Board
+
+app.post("/api/addboard", (req, res) => {
   const { name, description } = req.body;
-
-  // Create a new task with an auto-incremented ID
-  const newData = new taskModel({ id: autoIncrementId, name, description });
-
-  // Increment the auto-increment ID for the next task
+  const newData = new boardModel({ id: autoIncrementId, name, description });
   autoIncrementId++;
 
   newData
@@ -43,6 +43,8 @@ app.post("/api/addtask", (req, res) => {
     .then(() => res.json(newData))
     .catch((err) => res.json(err));
 });
+
+//To edit Boards name and description
 
 app.put("/api/editboard", async (req, res) => {
   try {
@@ -55,11 +57,7 @@ app.put("/api/editboard", async (req, res) => {
       },
     };
 
-    // Find and update the data in your database based on the provided ID
-    const updatedData = await taskModel.findOneAndUpdate(
-      { id: id }, // Specify the task to update based on the ID
-      update
-    );
+    const updatedData = await boardModel.findOneAndUpdate({ id: id }, update);
 
     if (updatedData) {
       res.status(200).json(updatedData);
@@ -71,31 +69,32 @@ app.put("/api/editboard", async (req, res) => {
   }
 });
 
-app.get("/api/findtask/:id", (req, res) => {
-  const taskId = req.params.id;
+//To find Board by ID(self generated auto incrementing ID)
 
-  taskModel
-    .findOne({ id: taskId })
-    .then((task) => {
-      if (task) {
-        // Task with the specified ID found
-        res.json(task);
+app.get("/api/findboard/:id", (req, res) => {
+  const boardId = req.params.id;
+
+  boardModel
+    .findOne({ id: boardId })
+    .then((board) => {
+      if (board) {
+        res.json(board);
       } else {
-        // Task not found
-        res.status(404).json({ error: "Task not found" });
+        res.status(404).json({ error: "board not found" });
       }
     })
     .catch((err) => {
-      // Handle database query errors
-      console.error("Error finding task:", err);
-      res.status(500).json({ error: "Error finding task" });
+      console.error("Error finding board:", err);
+      res.status(500).json({ error: "Error finding board" });
     });
 });
+
+//To delete Board by ID
 
 app.delete("/api/deleteboard/:id", (req, res) => {
   const customId = req.params.id;
 
-  taskModel.deleteOne({ id: customId })
+  boardModel.deleteOne({ id: customId })
     .then(() => {
       console.log("Data deleted successfully");
       res.json({ message: "Data deleted successfully" });
@@ -106,10 +105,49 @@ app.delete("/api/deleteboard/:id", (req, res) => {
     });
 });
 
+//From here Routes for Task i.e columns Tab for each Boards
+//To add New Task
+
+app.post("/api/addtask", (req, res) => {
+  const { name, description, dueDate } = req.body;
+
+//Used new model i.e taskModel
+  const newTask = new taskModel({
+    name,
+    description,
+    dueDate
+  });
+
+  newTask
+    .save()
+    .then(() => {
+      res.json({ message: "Task added to new collection successfully" });
+    })
+    .catch((err) => {
+      console.error("Error adding task to new collection:", err);
+      res.status(500).json({ error: "Error adding task to new collection" });
+    });
+});
+
+//To retrieve all saved tasks from MongoDB
+
+app.get('/api/tasks', async (req, res) => {
+  try {
+    const tasks = await taskModel.find();
+    res.json(tasks);
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+    res.status(500).json({ error: 'Error fetching tasks' });
+  }
+});
+
+//For Socket.io {Not yet Used}
+
 io.on("connection", (socket) => {
   console.log("a user connected");
 });
 
+//Boom 
 server.listen(PORT, () => {
   console.log(`server is running on ${PORT}`);
 });

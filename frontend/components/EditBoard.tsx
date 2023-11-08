@@ -18,7 +18,7 @@ const EditBoard: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/findtask/${id}`); // Replace with your API endpoint
+      const response = await axios.get(`http://localhost:5000/api/findboard/${id}`); // Replace with your API endpoint
       setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -31,7 +31,7 @@ const EditBoard: React.FC = () => {
     try {
       await axios.put(`http://localhost:5000/api/editboard`, data); // Replace with your API endpoint
       setMessage('Data updated successfully');
-      window.location.replace('/tasks');
+      window.location.replace('/boards');
     } catch (error) {
       console.error('Error updating data:', error);
       setMessage('Error updating data');

@@ -18,7 +18,7 @@ export function DeleteBoard() {
         
         try {
             await axios.delete(`http://localhost:5000/api/deleteboard/${id}`);
-            window.location.replace('/tasks');
+            window.location.replace('/boards');
         } catch (error) {
             console.error('Error deleting board:', error);
         }
