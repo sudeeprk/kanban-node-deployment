@@ -1,3 +1,3 @@
 # Still Working on Frontend...
 # Screenshots, Not final product
-[App Screenshot](https://raw.github.com/sudeepkudari0/Kanban-Application/frontend/main/screenshots/scr1.png)
+[App Screenshot](https://github.com/sudeepkudari0/Kanban-Application/tree/main/frontend/screenshots/scr1.png)
