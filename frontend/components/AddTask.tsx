@@ -55,7 +55,7 @@ export const AddTask: React.FC = () => {
   return (
     <div>
       
-      <button onClick={openModal} className="mt-2 ml-3 bg-black text-white font-bold h-12 w-25 rounded-md p-2">Add Task</button>
+      <button onClick={openModal} className="mt-2 ml-3 bg-black hover:bg-green-700 text-white font-bold h-12 w-25 rounded-md p-2">Add Task</button>
       <Modal open={isModalOpen} onClose={closeModal} center classNames={{ modal: 'custom-modal' }}>
         <form onSubmit={handleSubmit}>
           <div>
@@ -72,7 +72,6 @@ export const AddTask: React.FC = () => {
           </div>
           <button className='m-2 bg-black rounded-md w-28 h-10 text-white' type="submit">Add Task</button>
         </form>
-        <button className='m-2 bg-black rounded-md w-28 h-10 text-white' onClick={closeModal}>Close</button>
       </Modal>
       {message && <p>{message}</p>}
     </div>

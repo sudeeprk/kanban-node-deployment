@@ -1,23 +1,20 @@
-/* AddTask.css */
 .custom-modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    width: 400px; /* Adjust the width to your liking */
-  }
-  
-  /* Optional: Add more styling to the modal, e.g., centering it */
-  .custom-modal > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Optional: Add a blur effect to the background */
-  .ReactModal__Overlay {
-    background: rgba(0, 0, 0, 0.7);
-  }
-  
-  /* Add your additional styling for form elements and buttons as needed */
-  
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+}
+
+
+.custom-modal > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.ReactModal__Overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+

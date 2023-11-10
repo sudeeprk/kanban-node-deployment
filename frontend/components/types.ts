@@ -5,15 +5,15 @@ export type myboards = {
 };
 
 export type Task ={
-    id: Number;
+    id: Id;
+    columnId: Id;
     name: string;
     description: string;
-    dueDate: Date;
+    
 }
+export type Id = Number | string
 
 export type Column ={
-    id: Number;
+    id: Id;
     title: string;
-    description: string;
-    tasks: Task[];
 }

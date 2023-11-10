@@ -35,9 +35,9 @@ const SideBar = () => {
             <h2 className="p-2 text-3xl">Boards</h2>
             <ul>
               {boards.map((board) => (
-                <li className="m-3">
+                <li className="m-3 ">
                   <button
-                    className="m-2 mb-2"
+                    className="m-2 mb-2 hover:text-blue-500"
                     onClick={() => handleLinkClick(board.name, board.description, board.id)}
                   >
                     {board.name}
@@ -47,9 +47,10 @@ const SideBar = () => {
               ))}
             </ul>
           </div>
+          <div className="m-5 ml-20">
           <AddBoard />
         </div>
-        
+        </div>
         
       </div>
     </>

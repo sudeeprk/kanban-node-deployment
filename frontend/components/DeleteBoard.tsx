@@ -29,7 +29,7 @@ export function DeleteBoard() {
     return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="mt-2 ml-3 bg-black text-white font-bold h-11 w-20">Delete</Button>
+        <Button variant="outline" className="mt-2 ml-3 bg-black text-white font-bold h-11 w-20 hover:bg-red-700">Delete</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

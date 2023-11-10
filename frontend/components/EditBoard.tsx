@@ -31,7 +31,7 @@ const EditBoard: React.FC = () => {
     try {
       await axios.put(`http://localhost:5000/api/editboard`, data); // Replace with your API endpoint
       setMessage('Data updated successfully');
-      window.location.replace('/boards');
+      window.location.replace('/boards/');
     } catch (error) {
       console.error('Error updating data:', error);
       setMessage('Error updating data');
