@@ -2,7 +2,6 @@ const express = require("express");
 require("dotenv").config();
 const { createServer } = require("node:http");
 const boardModel = require("./model/boards");
-const taskModel = require("./model/tasks");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
@@ -20,124 +19,120 @@ mongoose
 
 app.use(cors());
 
-let autoIncrementId = 1;
+// To get list of all Boards(collections)
 
-//To retrive all saved Boards from MongoDB
-
-app.get("/api/boards", (req, res) => {
-  boardModel
-    .find()
-    .then((boards) => res.json(boards))
-    .catch((err) => res.json(err));
-});
-
-//To add New Board
-
-app.post("/api/addboard", (req, res) => {
-  const { name, description } = req.body;
-  const newData = new boardModel({ id: autoIncrementId, name, description });
-  autoIncrementId++;
-
-  newData
-    .save()
-    .then(() => res.json(newData))
-    .catch((err) => res.json(err));
-});
-
-//To edit Boards name and description
-
-app.put("/api/editboard", async (req, res) => {
+app.get('/api/boards', async (req, res) => {
   try {
-    const { id, name, description } = req.body;
-
-    const update = {
-      $set: {
-        name: name,
-        description: description,
-      },
-    };
-
-    const updatedData = await boardModel.findOneAndUpdate({ id: id }, update);
-
-    if (updatedData) {
-      res.status(200).json(updatedData);
-    } else {
-      res.status(404).json({ error: "Data not found" });
-    }
+    const boards = await boardModel.find();
+    res.json(boards);
   } catch (error) {
-    res.status(500).json({ error: "Error updating data" });
+    console.error('Error fetching boards:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
-//To find Board by ID(self generated auto incrementing ID)
+// To create new board
 
-app.get("/api/findboard/:id", (req, res) => {
-  const boardId = req.params.id;
-
-  boardModel
-    .findOne({ id: boardId })
-    .then((board) => {
-      if (board) {
-        res.json(board);
-      } else {
-        res.status(404).json({ error: "board not found" });
-      }
-    })
-    .catch((err) => {
-      console.error("Error finding board:", err);
-      res.status(500).json({ error: "Error finding board" });
-    });
-});
-
-//To delete Board by ID
-
-app.delete("/api/deleteboard/:id", (req, res) => {
-  const customId = req.params.id;
-
-  boardModel.deleteOne({ id: customId })
-    .then(() => {
-      console.log("Data deleted successfully");
-      res.json({ message: "Data deleted successfully" });
-    })
-    .catch((err) => {
-      console.error("Error deleting data:", err);
-      res.status(500).json({ error: "Error deleting data" });
-    });
-});
-
-//From here Routes for Task i.e columns Tab for each Boards
-//To add New Task
-
-app.post("/api/addtask", (req, res) => {
-  const { name, description, dueDate } = req.body;
-
-//Used new model i.e taskModel
-  const newTask = new taskModel({
-    name,
-    description,
-    dueDate
-  });
-
-  newTask
-    .save()
-    .then(() => {
-      res.json({ message: "Task added to new collection successfully" });
-    })
-    .catch((err) => {
-      console.error("Error adding task to new collection:", err);
-      res.status(500).json({ error: "Error adding task to new collection" });
-    });
-});
-
-//To retrieve all saved tasks from MongoDB
-
-app.get('/api/tasks', async (req, res) => {
+app.post('/api/boards', async (req, res) => {
+  const newBoard = req.body;
   try {
-    const tasks = await taskModel.find();
-    res.json(tasks);
+    const createdBoard = await boardModel.create(newBoard);
+    res.json(createdBoard);
   } catch (error) {
-    console.error('Error fetching tasks:', error);
-    res.status(500).json({ error: 'Error fetching tasks' });
+    console.error('Error adding board:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// To find Board By ID (_id)
+
+app.get('/api/boards/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const board = await boardModel.findById(id);
+
+    if (!board) {
+      return res.status(404).json({ message: 'Board not found' });
+    }
+
+    res.status(200).json(board);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+// To find Board by ID and update (_id)
+
+app.put("/api/boards/:id", async (req, res) => {
+  const { id } = req.params;
+  const { name, description } = req.body;
+
+  try {
+    const updatedBoard = await boardModel.findByIdAndUpdate(
+      id,
+      { name, description },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedBoard) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+
+    res.status(200).json(updatedBoard);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// To find Board by ID and delete (_id)
+
+app.delete("/api/boards/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedBoard = await boardModel.findByIdAndDelete(id);
+
+    if (!deletedBoard) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+
+    res.status(200).json({ message: "Board deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// To add Task for specific Board using its id
+
+app.post('/api/boards/:id/tasks', async (req, res) => {
+  const { id } = req.params;
+  const { taskName, taskDescription, dueDate } = req.body;
+
+  try {
+    const board = await boardModel.findById(id);
+
+    if (!board) {
+      return res.status(404).json({ message: 'Board not found' });
+    }
+
+    const newTask = {
+      taskName,
+      taskDescription,
+      dueDate,
+    };
+
+    board.tasks.push(newTask);
+
+    await board.save();
+
+    res.status(201).json(board);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 

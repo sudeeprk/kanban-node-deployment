@@ -1,19 +1,17 @@
-export type myboards = {
-    id: Number;
+export type Task = {
+    taskName: string;
+    taskDescription: string;
+    dueDate: string;
+  }
+  
+export type BoardWithID = {
     name: string;
     description: string;
-};
-
-export type Task ={
-    id: Id;
-    columnId: Id;
+    tasks: Task[];
+    _id: string;
+  }
+export type Board = {
     name: string;
     description: string;
-    
-}
-export type Id = Number | string
-
-export type Column ={
-    id: Id;
-    title: string;
-}
+    tasks: Task[];
+  }  

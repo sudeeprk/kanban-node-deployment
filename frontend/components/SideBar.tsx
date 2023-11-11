@@ -1,20 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { myboards } from "./types";
+import { BoardWithID, Task } from "./types";
 import { useRouter } from "next/navigation";
-import AddBoard  from "./AddBoard"
-
-
-const SideBar = () => {
-  const [boards, setboards] = useState<myboards[]>([]);
+import AddBoard from "./Board/AddBoard"
+const SideBar: React.FC = () => {
+  const [boards, setBoards] = useState<BoardWithID[]>([]);
+  
 
   useEffect(() => {
     axios
-      .get<myboards[]>("http://localhost:5000/api/boards")
+      .get<BoardWithID[]>("http://localhost:5000/api/boards")
       .then((res) => {
         const boards = res.data;
-        setboards(boards);
+        setBoards(boards);
         console.log(res.data);
       })
       .catch((err) => {
@@ -23,10 +22,10 @@ const SideBar = () => {
   }, []);
   const router = useRouter();
 
-  const handleLinkClick = (name: string, description: string, id:Number) => {
-    router.push(`/boards?name=${name}&description=${description}&id=${id}`);
+  const handleLinkClick = ( _id: string) => {
+    router.push(`/boards?_id=${_id}`);
   };
-
+  
   return (
     <>
       <div className="flex flex-1">
@@ -38,7 +37,7 @@ const SideBar = () => {
                 <li className="m-3 ">
                   <button
                     className="m-2 mb-2 hover:text-blue-500"
-                    onClick={() => handleLinkClick(board.name, board.description, board.id)}
+                    onClick={() => handleLinkClick(board._id)}
                   >
                     {board.name}
                     
@@ -47,13 +46,13 @@ const SideBar = () => {
               ))}
             </ul>
           </div>
-          <div className="m-5 ml-20">
+          <div className="ml-20">
           <AddBoard />
+          </div>
+          </div>
         </div>
-        </div>
-        
-      </div>
     </>
   );
 };
+
 export default SideBar;

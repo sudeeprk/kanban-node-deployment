@@ -1,18 +1,15 @@
 const mongoose = require("mongoose");
-const boardSchema = new mongoose.Schema({
-    id: {
-        type:Number
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: false
-    },
-    due: Number,
-    });
+const taskSchema = new mongoose.Schema({
+  taskName: String,
+  taskDescription: String,
+  dueDate: Date,
+});
 
-    const boardModel = mongoose.model("boards", boardSchema);
-    module.exports = boardModel;
+const boardSchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  tasks: [taskSchema],
+});
+
+const boardModel = mongoose.model("kanban", boardSchema);
+module.exports = boardModel;
