@@ -6,11 +6,25 @@ import { BoardWithID, Task } from "../../components/types";
 import AddTask from "@/components/Tasks/AddTask";
 import EditBoard from "@/components/Board/EditBoard";
 import DeleteBoard from "@/components/Board/DeleteBoard";
+import Columns from "@/components/Columns/Columns";
 const page = () => {
   const [board, setBoard] = useState<BoardWithID>({
     name: "",
     description: "",
-    tasks: [],
+    columns: [
+      {
+        _id: "",
+        name: "",
+        tasks: [
+          {
+            _id: "",
+            taskName: "",
+            taskDescription: "",
+            dueDate: "",
+          }
+        ],
+      },
+    ],
     _id: "",
   });
   const params = useSearchParams();
@@ -50,22 +64,10 @@ const page = () => {
       <div className="ml-4 mb-4">
         <AddTask />
       </div>
-
       <div>
-        <p className="text-[25px] font-semibold  ml-4 mb-2 text-gray-500">
-          To-do
-        </p>
-        <ul>
-          {board.tasks.map((task) => (
-            <li className="text-[25px] font-semibold  ml-4 mb-2 text-gray-500">
-              {task.taskName}
-
-              {task.taskDescription}
-              {task.dueDate}
-            </li>
-          ))}
-        </ul>
-      </div>
+        <Columns />
+        </div>
+      
     </div>
   );
 };

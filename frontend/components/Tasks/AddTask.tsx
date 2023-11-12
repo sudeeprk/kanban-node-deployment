@@ -10,12 +10,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Board, Task } from "../types";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
-import router from "next/router";
 
 function AddTask() {
+  const [columnName, setcolumnName] = useState("");
   const [newTaskName, setNewTaskName] = useState("");
   const [newTaskDescription, setNewTaskDescription] = useState("");
   const params = useSearchParams();
@@ -25,15 +24,15 @@ function AddTask() {
       const response = await axios.post(
         `http://localhost:5000/api/boards/${id}/tasks`,
         {
+          columnName: columnName,
           taskName: newTaskName,
           taskDescription: newTaskDescription,
-          dueDate: new Date()
+          dueDate: new Date(),
         }
       );
-      
+
       setNewTaskName("");
       setNewTaskDescription("");
-      // router.replace("/");
       window.location.pathname = "/boards";
     } catch (error) {
       console.error("Error adding task:", error);
@@ -50,15 +49,26 @@ function AddTask() {
           Add Task
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Add Task</DialogTitle>
           <DialogDescription>Enter Details for New Task</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-4 py-4 w-[550px]">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Column Name
+            </Label>
+            <Input
+              id="name"
+              className="col-span-3"
+              value={columnName}
+              onChange={(e) => setcolumnName(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="name" className="text-right">
+              Task Name
             </Label>
             <Input
               id="name"
@@ -75,7 +85,7 @@ function AddTask() {
               id="description"
               className="col-span-3"
               value={newTaskDescription}
-          onChange={(e) => setNewTaskDescription(e.target.value)}
+              onChange={(e) => setNewTaskDescription(e.target.value)}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
