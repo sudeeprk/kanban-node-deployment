@@ -13,7 +13,7 @@ const io = new Server(server);
 const PORT = 5000;
 
 mongoose
-  .connect("mongodb+srv://sudeep:sudeep@cluster0.cqfoz4h.mongodb.net/kanban")
+  .connect("mongodb://127.0.0.1:27017/kanban")
   .then(() => console.log("Mongodb connected"))
   .catch(() => console.log("error"));
 
@@ -110,7 +110,7 @@ app.delete("/api/boards/:id", async (req, res) => {
 
 app.post('/api/boards/:id/tasks', async (req, res) => {
   const { id } = req.params;
-  const { taskName, taskDescription, dueDate } = req.body;
+  const { columnName, taskName, taskDescription, dueDate } = req.body;
 
   try {
     const board = await boardModel.findById(id);
@@ -119,13 +119,37 @@ app.post('/api/boards/:id/tasks', async (req, res) => {
       return res.status(404).json({ message: 'Board not found' });
     }
 
-    const newTask = {
-      taskName,
-      taskDescription,
-      dueDate,
-    };
+    let existingColumn = null;
 
-    board.tasks.push(newTask);
+    for (const column of board.columns) {
+      if (column.name === columnName) {
+        existingColumn = column;
+        break;
+      }
+    }
+
+    if (existingColumn) {
+      const newTask = {
+        taskName,
+        taskDescription,
+        dueDate,
+      };
+
+      existingColumn.tasks.push(newTask);
+    } else {
+      const newColumn = {
+        name: columnName,
+        tasks: [
+          {
+            taskName,
+            taskDescription,
+            dueDate,
+          },
+        ],
+      };
+
+      board.columns.push(newColumn);
+    }
 
     await board.save();
 
@@ -135,6 +159,33 @@ app.post('/api/boards/:id/tasks', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
+// to find tasks of columnID
+
+app.get('/api/boards/:boardId/columns/:columnName/tasks', async (req, res) => {
+  const { boardId, columnName } = req.params;
+
+  try {
+    const board = await boardModel.findById(boardId);
+
+    if (!board) {
+      return res.status(404).json({ message: 'Board not found' });
+    }
+
+    const column = board.columns.find((col) => col.name === columnName);
+
+    if (!column) {
+      return res.status(404).json({ message: 'Column not found' });
+    }
+
+    res.status(200).json(column.tasks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+
 
 //For Socket.io {Not yet Used}
 
