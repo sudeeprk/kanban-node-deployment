@@ -26,10 +26,8 @@ function EditBoard(){
   const [editedBoardDescription, setEditedBoardDescription] = useState<string>("");
   const params = useSearchParams();
   const id = params.get("_id");
-//   const router = useRouter();
 
   useEffect(() => {
-    // Fetch board details when component mounts
     const fetchBoardDetails = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/boards/${id}`);

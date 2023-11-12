@@ -7,7 +7,6 @@ import { CSS } from '@dnd-kit/utilities';
 import { BoardWithID, Column, Task } from '../types';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 
-// Main component for columns
 export default function Columns() {
   const [board, setBoard] = useState<BoardWithID | null>(null);
   const params = useSearchParams();
@@ -28,7 +27,6 @@ export default function Columns() {
     }
   }, [boardId]);
 
-  // Extract column names from the board or provide an empty array if the board is not loaded
   const columnIds = useMemo(() => (board ? board.columns.map((col) => col.name) : []), [board]);
 
   return (
@@ -44,7 +42,6 @@ export default function Columns() {
   );
 }
 
-// Component for each column
 function ColumnComponent({ columnName, tasks, columnIndex }: { columnName: string; tasks: Task[]; columnIndex: number }) {
   return (
     <div className='min-w-[400px]'>
@@ -60,7 +57,6 @@ function ColumnComponent({ columnName, tasks, columnIndex }: { columnName: strin
   );
 }
 
-// Component for each draggable task
 function TaskComponent({ task, columnIndex, taskIndex }: { task: Task; columnIndex: number; taskIndex: number }) {
   const { setNodeRef, attributes, listeners, transform, transition } = useSortable({
     id: `${columnIndex}-${taskIndex}`,

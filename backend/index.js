@@ -6,17 +6,18 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const { Server } = require("socket.io");
+const { env } = require("node:process");
 const app = express();
 const server = createServer(app);
 app.use(express.json());
 const io = new Server(server);
-const PORT = 5000;
+const PORT = process.env.PORT || 3001;
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/kanban")
-  .then(() => console.log("Mongodb connected"))
-  .catch(() => console.log("error"));
-
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log('Connected to MongoDB');
+          })
+    .catch(error => console.error('Error connecting to MongoDB:', error));
 app.use(cors());
 
 // To get list of all Boards(collections)
