@@ -1,37 +1,19 @@
-# Backend Application for Your Project
+# Kanban Application Backend (Node.js/MongoDB)
 
-This is the backend component of Kanban Application, which is responsible for managing data and serving APIs to the frontend.
+## Overview
+Welcome to the Node.js/MongoDB backend codebase for the Kanban Application! This folder contains the server-side logic and API implementation.
 
-## Table of Contents
+## Setup and Configuration
+- Navigate to the backend folder.
+- Configure your MongoDB connection settings in config.js.
+- Install dependencies: npm install.
+- Run the application: npm start.
 
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-  - [Installation](#installation)
-- [Configuration](#configuration)
-- [API Endpoints](#api-endpoints)
-- [Database](#database)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Technologies Used
-
-- Express, MongoDB
-
-## Getting Started
-
-- Bootstrap required packages and modules
-
-### Installation
-
-1. Clone this repository to your local machine.
-2. Install the necessary dependencies:
-
-   ```bash
-   npm install
-   
-3. Run the project:
-
-   ```bash
-   npm start
+## Project Structure
+    /src: Node.js source code for the backend application.
+    /.env: Configuration files, including database connection settings.
+## API Endpoints
+    /api/boards: Endpoints for managing Kanban boards.
+    /api/tasks: Endpoints for managing tasks within boards.
+## Customization
+This backend is tailored for use with the Kanban Application frontend. Customize as needed, and refer to the frontend documentation for compatibility details.
