@@ -68,6 +68,7 @@ Kanban Board: Manage tasks using a Kanban board with columns for "To Do," "In Pr
 
 Task Details: View and edit task details, including title, description, and due date.
 
+### Screenshots
 <img src="https://raw.github.com/sudeepkudari0/kanban-app-node/main/frontend/Screenshot from 2023-11-20 10-56-31.png"/>
 
 ### Contributing
