@@ -18,7 +18,7 @@ function DeleteBoard(){
 
   const deleteBoard = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/boards/${id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/boards/${id}`);
       window.location.pathname = "/";
     } catch (error) {
       console.error("Error deleting board:", error);

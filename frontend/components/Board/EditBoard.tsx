@@ -18,7 +18,7 @@ function EditBoard(){
   const [board, setBoard] = useState<BoardWithID>({
     name: "",
     description: "",
-    tasks: [],
+    columns: [],
     _id: "",
   });
 
@@ -30,7 +30,7 @@ function EditBoard(){
   useEffect(() => {
     const fetchBoardDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/boards/${id}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/boards/${id}`);
         setBoard(response.data);
         setEditedBoardName(response.data.name);
         setEditedBoardDescription(response.data.description);
@@ -61,10 +61,11 @@ function EditBoard(){
       ...board,
       name: editedBoardName,
       description: editedBoardDescription,
+      column: []
     };
 
     axios
-      .put<Board>(`http://localhost:5000/api/boards/${id}`, updatedBoard)
+      .put<Board>(`${process.env.NEXT_PUBLIC_API_URL}/boards/${id}`, updatedBoard)
       .then((response) => {
         console.log(response.data);
         window.location.pathname = "/";

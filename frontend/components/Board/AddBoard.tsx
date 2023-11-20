@@ -36,11 +36,12 @@ function AddBoard() {
     const newBoard: Board = {
       name: newBoardName,
       description: newBoardDescription,
-      tasks: [],
+      column: [],
+      _id: "",
     };
 
     axios
-      .post<Board>("http://localhost:5000/api/boards", newBoard)
+      .post<Board>(`${process.env.NEXT_PUBLIC_API_URL}/boards`, newBoard)
       .then((response) => {
         console.log(response.data);
         // Reset input fields

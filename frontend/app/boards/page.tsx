@@ -33,7 +33,7 @@ const page = () => {
     const fetchBoardDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/boards/${id}`
+          `${process.env.NEXT_PUBLIC_API_URL}/boards/${id}`
         );
         setBoard(response.data);
       } catch (error) {
