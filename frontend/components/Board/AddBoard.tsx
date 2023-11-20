@@ -41,7 +41,7 @@ function AddBoard() {
     };
 
     axios
-      .post<Board>(`${process.env.NEXT_PUBLIC_API_URL}/boards`, newBoard)
+      .post<Board>("http://13.233.120.132:5000/api/boards", newBoard)
       .then((response) => {
         console.log(response.data);
         // Reset input fields

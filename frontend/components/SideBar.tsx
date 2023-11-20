@@ -10,7 +10,7 @@ const SideBar: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get<BoardWithID[]>(`${process.env.NEXT_PUBLIC_API_URL}/boards`)
+      .get<BoardWithID[]>("http://13.233.120.132:5000/api/boards")
       .then((res) => {
         const boards = res.data;
         setBoards(boards);

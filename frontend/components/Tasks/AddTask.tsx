@@ -22,7 +22,7 @@ function AddTask() {
   const addTask = async () => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/boards/${id}/tasks`,
+        `http://13.233.120.132:5000/api/boards/${id}/tasks`,
         {
           columnName: columnName,
           taskName: newTaskName,
