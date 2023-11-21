@@ -41,7 +41,7 @@ function AddBoard() {
     };
 
     axios
-      .post<Board>("http://13.233.120.132:5000/api/boards", newBoard)
+      .post<Board>("http://13.232.229.116:80/api/boards", newBoard)
       .then((response) => {
         console.log(response.data);
         // Reset input fields

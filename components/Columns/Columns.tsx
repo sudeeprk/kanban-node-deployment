@@ -15,7 +15,7 @@ export default function Columns() {
   useEffect(() => {
     const fetchBoardDetails = async () => {
       try {
-        const response = await axios.get(`http://13.233.120.132:5000/api/boards/${boardId}`);
+        const response = await axios.get(`http://13.232.229.116:80/api/boards/${boardId}`);
         setBoard(response.data);
       } catch (error) {
         console.error('Error fetching board details:', error);

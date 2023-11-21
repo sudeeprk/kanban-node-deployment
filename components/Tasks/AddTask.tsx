@@ -22,7 +22,7 @@ function AddTask() {
   const addTask = async () => {
     try {
       const response = await axios.post(
-        `http://13.233.120.132:5000/api/boards/${id}/tasks`,
+        `http://13.232.229.116:80/api/boards/${id}/tasks`,
         {
           columnName: columnName,
           taskName: newTaskName,

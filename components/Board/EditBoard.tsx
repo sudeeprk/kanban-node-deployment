@@ -30,7 +30,7 @@ function EditBoard(){
   useEffect(() => {
     const fetchBoardDetails = async () => {
       try {
-        const response = await axios.get(`http://13.233.120.132:5000/api/boards/${id}`);
+        const response = await axios.get(`http://13.232.229.116:80/api/boards/${id}`);
         setBoard(response.data);
         setEditedBoardName(response.data.name);
         setEditedBoardDescription(response.data.description);
@@ -65,7 +65,7 @@ function EditBoard(){
     };
 
     axios
-      .put<Board>(`http://13.233.120.132:5000/api/boards/${id}`, updatedBoard)
+      .put<Board>(`http://13.232.229.116:80/api/boards/${id}`, updatedBoard)
       .then((response) => {
         console.log(response.data);
         window.location.pathname = "/";
